@@ -1,0 +1,39 @@
+video_publisher:
+  ros__parameters:
+    video_path: ""
+    image_topic: image_raw
+    fps: 0.0
+    loop: true
+    frame_id: camera
+
+detector:
+  ros__parameters:
+    image_topic: image_raw
+    detections_topic: detections
+    backend: opencv_dnn
+    model_path: ""
+    config_path: ""
+    confidence: 0.35
+    iou: 0.45
+    input_size: 416
+    device: cpu
+    allowed_classes: ""
+
+tracker:
+  ros__parameters:
+    detections_topic: detections
+    tracks_topic: tracks
+    high_thresh: 0.5
+    low_thresh: 0.1
+    iou_threshold: 0.3
+    max_age: 30
+    min_hits: 1
+    coast_frames: 1
+    fallback_fps: 30.0
+
+annotate:
+  ros__parameters:
+    image_topic: image_raw
+    tracks_topic: tracks
+    annotated_topic: image_annotated
+    slop: 0.3

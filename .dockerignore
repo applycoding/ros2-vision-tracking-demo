@@ -1,0 +1,9 @@
+.git
+build
+install
+log
+models
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.venv

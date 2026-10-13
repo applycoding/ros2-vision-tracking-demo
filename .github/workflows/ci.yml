@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  humble:
+    runs-on: ubuntu-22.04
+    container:
+      image: ros:humble-ros-base-jammy
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build and test dependencies
+        run: |
+          set -eo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            python3-colcon-common-extensions \
+            python3-numpy \
+            python3-opencv \
+            python3-pytest \
+            ros-humble-ament-copyright \
+            ros-humble-ament-flake8 \
+            ros-humble-ament-pep257 \
+            ros-humble-cv-bridge \
+            ros-humble-launch-ros \
+            ros-humble-message-filters \
+            ros-humble-vision-msgs
+          rm -rf /var/lib/apt/lists/*
+
+      - name: Build
+        run: |
+          set -eo pipefail
+          source /opt/ros/humble/setup.bash
+          colcon build --packages-select vision_tracking --event-handlers console_direct+
+
+      - name: Test
+        run: |
+          set -eo pipefail
+          source /opt/ros/humble/setup.bash
+          colcon test --packages-select vision_tracking --event-handlers console_direct+
+          colcon test-result --verbose

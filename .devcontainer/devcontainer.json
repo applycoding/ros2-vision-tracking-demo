@@ -1,0 +1,26 @@
+{
+  "name": "ROS 2 Humble vision tracking",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/opt/ws",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/ws,type=bind",
+  "remoteUser": "root",
+  "postCreateCommand": "bash -lc 'source /opt/ros/humble/setup.bash && colcon build --packages-select vision_tracking --symlink-install && bash scripts/fetch_assets.sh'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-iot.vscode-ros"
+      ]
+    }
+  },
+  "containerEnv": {
+    "ROS_DISTRO": "humble",
+    "ROS_DOMAIN_ID": "42"
+  },
+  "runArgs": [
+    "--network=host"
+  ]
+}
